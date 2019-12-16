@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Text, Float
+from sqlalchemy import Column, Integer, String, Text, Float, Date
 from sqlalchemy import Sequence
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
@@ -74,3 +74,38 @@ class Order(Base):
 
     def __repr__(self):
         return "ID: %s Customer: %s Name: %s\nDescription: %s" % (self.id, self.customer_id, self.name, self.description)
+
+class Payment(Base):
+    __tablename__ = 'payments'
+    id = Column(Integer, Sequence('customer_id_seq'), primary_key=True)
+    customer_id = Column(Integer, ForeignKey('stages.id'))
+    order_id = Column(Integer, ForeignKey('orders.id'))
+    name = Column(String(50))
+    number = Column(Integer(16))
+    zipcode = Column(Integer(5))
+    date = Column(Date())
+    security_code = Column(Integer(3))
+    payment_amount = Column(Float(), nullable=False, default=0.00)
+
+    def __repr__(self):
+        return "ID: %s Customer: %s Name: %s\nDescription: %s" % (self.id, 
+            self.customer_id, 
+            self.name, 
+            self.order_id, 
+            self.name, 
+            self.number, 
+            self.zipcode, 
+            self.security_code, 
+            self.payment_amount)
+
+class Request(Base):
+    __tablename__ = 'requests'
+    id = Column(Integer, Sequence('customer_id_seq'), primary_key=True)
+    customer_id = Column(Integer, ForeignKey('stages.id'))
+    order_id = Column(Integer, ForeignKey('orders.id'))
+    stage_id = Column(Integer, ForeignKey('customers.id'), default=3)
+    request = Column(Text())
+    
+    def __repr__(self):
+        return "ID: %s Customer: %s Name: %s\nDescription: %s" % (self.id, self.customer_id, self.order_id, self.stage_id, self.request)
+
