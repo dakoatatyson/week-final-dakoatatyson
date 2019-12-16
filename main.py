@@ -1,7 +1,8 @@
 import customer
+import employee
 
 def main():
-    #Customer 2 Creating Order 1
+    #Customer 2 Creating Order 2
     customer.new_order('janedoe@gmail.com', 'jane doe', '1-111-111-1111', 1, 'Project 1', 'Simple Website')
 
     #Customer 1 views Order 1 
@@ -11,10 +12,10 @@ def main():
     customer.view_all_orders(1)
 
     #Customer 2 Submits Order 2 Cancelation 
-
+    customer.request_order_cancelation(2,2)
 
     #Employee Cancels Order 2
-
+    employee.cancel_order(2)
 
     #Customer 1 Submits chnages to order 1
 

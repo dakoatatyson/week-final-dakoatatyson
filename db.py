@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from tables import Base, User, Employee, Customer, Feature, Package, Stage, Order
+from tables import Base, User, Employee, Customer, Feature, Package, Stage, Order, Request, Payment
 
-engine = create_engine('sqlite:///:memory:', echo=True)
+engine = create_engine('sqlite:///:memory:', echo=False)
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -39,6 +39,10 @@ def add_feature(order_id, name, description):
     session.add(Feature(order_id=order_id, name=name, description=description))
     session.commit()
 
+def add_request(customer, order, request):
+    session.add(Request(customer_id=customer, order_id=order, request=request))
+    session.commit()
+
 def view_customer(email):
     for customer in session.query(Customer).filter(User.id==Customer.user_id).filter(User.email==email):
         return customer.id
@@ -47,13 +51,26 @@ def view_order(order_id):
     for order in session.query(Order).filter(Order.id==order_id):
         return order
 
-def view_all_orders(customer_id):
+def view_customer_orders(customer_id):
     orders = []
 
     for order in session.query(Order).filter(Order.customer_id==customer_id):
         orders.append(order)
 
     return orders
+
+def view_all_orders():
+    orders = []
+
+    for order in session.query(Order).order_by(Order.id):
+        orders.append(order)
+
+    return orders
+
+def cancel_order(order_id):
+    order = view_order(order_id)
+    order.stage_id = 7
+    session.commit()
 
 add_employee('dakoatatyson@gmail.com')
 

@@ -73,7 +73,7 @@ class Order(Base):
     balance = Column(Float(), nullable=False, default=0.00)
 
     def __repr__(self):
-        return "ID: %s Customer: %s Name: %s\nDescription: %s" % (self.id, self.customer_id, self.name, self.description)
+        return "ID: %s Customer: %s Name: %s Stage: %s\nDescription: %s" % (self.id, self.customer_id, self.name, self.stage_id, self.description)
 
 class Payment(Base):
     __tablename__ = 'payments'
@@ -81,20 +81,20 @@ class Payment(Base):
     customer_id = Column(Integer, ForeignKey('stages.id'))
     order_id = Column(Integer, ForeignKey('orders.id'))
     name = Column(String(50))
-    number = Column(Integer(16))
-    zipcode = Column(Integer(5))
+    number = Column(Integer())
+    zipcode = Column(Integer())
     date = Column(Date())
-    security_code = Column(Integer(3))
+    security_code = Column(Integer())
     payment_amount = Column(Float(), nullable=False, default=0.00)
 
     def __repr__(self):
-        return "ID: %s Customer: %s Name: %s\nDescription: %s" % (self.id, 
+        return "ID: %s Customer: %s Order: %s Name: %s Number: %s Zip: %s Date: %s Secuirty Code: %s Payment Amount: %s" % (self.id, 
             self.customer_id, 
-            self.name, 
             self.order_id, 
             self.name, 
             self.number, 
             self.zipcode, 
+            self.date,
             self.security_code, 
             self.payment_amount)
 
@@ -107,5 +107,5 @@ class Request(Base):
     request = Column(Text())
     
     def __repr__(self):
-        return "ID: %s Customer: %s Name: %s\nDescription: %s" % (self.id, self.customer_id, self.order_id, self.stage_id, self.request)
+        return "ID: %s Customer: %s Order: %s Stage: %s\nRequest: %s" % (self.id, self.customer_id, self.order_id, self.stage_id, self.request)
 
